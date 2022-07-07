@@ -18,10 +18,11 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function createTransaction(array $userDetails, $valuePayer, $valuePayee)
     {
         DB::transaction(function () use ($userDetails, $valuePayer, $valuePayee) {
-            $payerUpdate =  $this->updateUserValue($userDetails["payer"], $valuePayer);
-            $payeeUpdate = $this->updateUserValue($userDetails["payee"], $valuePayee);
-            $saveTransaction = Transaction::create($userDetails);
-            if (!($payerUpdate && $payeeUpdate && $saveTransaction)) {
+            $payerUpdated =  $this->updateUserValue($userDetails["payer"], $valuePayer);
+            $payeeUpdated = $this->updateUserValue($userDetails["payee"], $valuePayee);
+            $transaction = Transaction::create($userDetails);
+
+            if (!($payerUpdated && $payeeUpdated && $transaction)) {
                 DB::rollBack();
                 return false;
             }

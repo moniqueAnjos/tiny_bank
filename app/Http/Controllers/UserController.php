@@ -33,9 +33,12 @@ class UserController  extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json([
-            'data' => $this->userService->getAllUsers()
-        ]);
+        return response()->json(
+            [
+                'data' => $this->userService->getAllUsers()
+            ],
+            200
+        );
     }
 
     /**

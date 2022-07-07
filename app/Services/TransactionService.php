@@ -35,7 +35,11 @@ class TransactionService
         $newValuePayer = $userPayer["value"] - $transactionData["value"];
         $newValuePayee = $userPayee["value"] + $transactionData["value"];
 
-        $transaction = $this->makeTransaction($transactionData, $newValuePayer, $newValuePayee);
+        $transaction = $this->makeTransaction(
+            $transactionData,
+            $newValuePayer,
+            $newValuePayee
+        );
         if ($transaction) {
             $this->transactionRepository->sendNotificaction();
         }
@@ -49,7 +53,10 @@ class TransactionService
             $valuePayee
         );
         if (!$transaction) {
-            throw new Exception('Ocorreu um problema durante a transação.', Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new Exception(
+                'Ocorreu um problema durante a transação.',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
         return $transaction;
     }
@@ -62,7 +69,10 @@ class TransactionService
     private function validateAuthorization()
     {
         if ($this->transactionRepository->validateTransaction() != 'Autorizado') {
-            throw new Exception('Transação não autorizada.', Response::HTTP_FORBIDDEN);
+            throw new Exception(
+                'Transação não autorizada.',
+                Response::HTTP_FORBIDDEN
+            );
         }
     }
 
@@ -84,7 +94,10 @@ class TransactionService
     private function validateEnoughValue($valueUser, $valueTransaction)
     {
         if ($valueUser < $valueTransaction) {
-            throw new Exception('Você não possui saldo suficiente para realizar a transação.', 422);
+            throw new Exception(
+                'Você não possui saldo suficiente para realizar a transação.',
+                422
+            );
         }
     }
 }

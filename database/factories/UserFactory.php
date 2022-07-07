@@ -8,23 +8,23 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * Defina o estado padrão do modelo.
      *
      * @return array
      */
-    public function definition()
+    public function definition($type = "COMMON")
     {
         return [
             'name' => $this->faker->name(),
+            'cpf_cnpj' => Str::random(14),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'password' => '123456', 
+            'type' => $type,
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indique que o endereço de e-mail do modelo não deve ser verificado.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
@@ -32,7 +32,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email_verified_at' => null,
+                'email' => null,
             ];
         });
     }

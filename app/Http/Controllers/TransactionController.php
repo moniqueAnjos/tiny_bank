@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionRequest;
 use App\Interfaces\TransactionRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
-use App\Providers\BuildHttpResponse;
 use App\Services\TransactionService;
 
 class TransactionController extends Controller
@@ -104,11 +103,11 @@ class TransactionController extends Controller
             "payee"
         ]);
         $this->transactionService->createTransaction($transactionData);
-        return BuildHttpResponse::formatResponse(
-            'Transação realizada com sucesso.',
-            200,
-            true
-        );
-    }
-   
+        
+        return response()->json([
+            'message' => 'Transação realizada com sucesso.',
+            'statusCode' => 200,
+            'result' =>  true
+        ]);       
+    }   
 }

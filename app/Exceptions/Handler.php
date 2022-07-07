@@ -45,39 +45,51 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
+    private function formatResponse($msg, $statuscode, $result, $errors = '')
+    {
+        $arrayReturn = [
+            'message' => $msg,
+            'statusCode' => $statuscode,
+            "result" => $result
+        ];
+        if ($errors != '') {
+            $arrayReturn["errors"] = $errors;
+        }
+        return response()->json(
+            $arrayReturn,
+            $statuscode
+        );
+    }
+
 
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
-            return response()->json(
-                [
-                    'message' => 'Ação não autorizada.',
-                    'statusCode' => Response::HTTP_FORBIDDEN,
-                    "result" => false
-                ],
-                Response::HTTP_FORBIDDEN
+            return $this->formatResponse(
+                'Ação não autorizada.',
+                Response::HTTP_FORBIDDEN,
+                false
             );
         }
         if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-            return response()->json([
-                'message' => 'Registro ' . str_replace('App\\', '', $exception->getModel()) . ' não encontrado',
-                'statusCode' => Response::HTTP_NOT_FOUND,
-                "result" => false
-            ], Response::HTTP_NOT_FOUND);
+            return $this->formatResponse(
+                'Registro ' . str_replace('App\\', '', $exception->getModel()) . ' não encontrado',
+                Response::HTTP_NOT_FOUND,
+                false
+            );
         }
         if ($exception instanceof \Illuminate\Validation\ValidationException) {
-            return response()->json([
-                'message' => 'Erro na validação de campo.',
-                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => $exception->errors(),
-                "result" => false
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->formatResponse(
+                'Erro na validação de campo.',
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                false,
+                $exception->errors()
+            );
         }
-
-        return response()->json([
-            'message' => $exception->getMessage(),
-            'statusCode' => $exception->getCode(),
-            "result" => false
-        ], 422);
+        return $this->formatResponse(
+            $exception->getMessage(),
+            $exception->getCode(),
+            false
+        );
     }
 }
