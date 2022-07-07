@@ -1,0 +1,225 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tiny Bank",
+        "description": "Api de transação",
+        "contact": {
+            "email": "darius@matulionis.lt"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/transaction": {
+            "post": {
+                "tags": [
+                    "Transação"
+                ],
+                "summary": "Executa uma transação",
+                "description": "Realiza uma transação de usuário/usuário ou usuário/lojista",
+                "operationId": "transaction",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "value": {
+                                        "description": "Valor Transação",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "100.00"
+                                    },
+                                    "payer": {
+                                        "description": "Pagador(a)",
+                                        "type": "number",
+                                        "example": 2
+                                    },
+                                    "payee": {
+                                        "description": "Beneficiário(a)",
+                                        "type": "number",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensagem de sucesso ou erro",
+                                            "type": "string"
+                                        },
+                                        "statusCode": {
+                                            "description": "Status da requisição(sucesso ou erro)",
+                                            "type": "integer"
+                                        },
+                                        "result": {
+                                            "description": "Resultado da requisição(true ou false)",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Transação realizada com sucesso.",
+                                        "statusCode": 200,
+                                        "result": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Transação não autorizada."
+                    },
+                    "422": {
+                        "description": "Você não possui saldo suficiente para realizar a transação."
+                    },
+                    "500": {
+                        "description": "Ocorreu um problema durante a transação."
+                    },
+                    "404": {
+                        "description": "Registro não encontrado"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Retorna a lista de usuários",
+                "description": "Retorna todos os usuários do banco e paginados",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Retorna listagem de usuários"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Cria usuário comum ou lojista",
+                "description": "Insere novos usuários no banco de dados",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome Usuário",
+                                        "type": "string",
+                                        "example": "Monique Arcanjo"
+                                    },
+                                    "cpf_cnpj": {
+                                        "description": "CPF/CNPJ Usuário",
+                                        "type": "string",
+                                        "example": "44455562158"
+                                    },
+                                    "email": {
+                                        "description": "Email usuário",
+                                        "type": "string",
+                                        "example": "monique.santos22.ms@gmail.com"
+                                    },
+                                    "password": {
+                                        "description": "Senha Usuário",
+                                        "type": "string",
+                                        "example": "teste123"
+                                    },
+                                    "type": {
+                                        "description": "Tipo do usuário",
+                                        "type": "string",
+                                        "example": "COMMON"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensagem de sucesso ou erro",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Dados Inseridos",
+                                            "type": "json"
+                                        },
+                                        "statusCode": {
+                                            "description": "Status da requisição(sucesso ou erro)",
+                                            "type": "integer"
+                                        },
+                                        "result": {
+                                            "description": "Resultado da requisição(true ou false)",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Dados inseridos com sucesso.",
+                                        "data": [],
+                                        "statusCode": 200,
+                                        "result": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Retorna informações do usuário",
+                "description": "Retorna dados do usuário",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Usuário id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Registro Models\\\\User não encontrado"
+                    }
+                }
+            }
+        }
+    }
+}
