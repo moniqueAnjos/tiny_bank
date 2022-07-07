@@ -18,8 +18,20 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'cpf_cnpj' => Str::random(14),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => '123456', 
+            'password' => '123456',
             'type' => $type,
+        ];
+    }
+
+    public function definitionWithValue($type = "COMMON", $value)
+    {
+        return [
+            'name' => $this->faker->name(),
+            'cpf_cnpj' => Str::random(14),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => '123456',
+            'type' => $type,
+            'value' => $value,
         ];
     }
 
