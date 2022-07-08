@@ -103,7 +103,7 @@ Execute o seeder no banco e pronto
 
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/24610980?v=4" width="100px;" alt=""/>
  <br />
- <sub><b>Monique Arcanjo</b></sub>💪
+ <sub><b>Monique Arcanjo</b></sub>
 
 👋🏽 Entre em contato!
 
