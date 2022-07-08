@@ -167,7 +167,7 @@ class UserController  extends Controller
      *          response=200,
      *          description="OK"
      *       ),
-     *      @OA\Response(response=404, description="Registro Models\\User não encontrado"),      
+     *       @OA\Response(response=404, description="Registro Models\\User não encontrado"),     
      * )
      * @return User
      */

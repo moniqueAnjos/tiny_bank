@@ -18,7 +18,7 @@ use Illuminate\Routing\Controller as BaseController;
  *      title="Tiny Bank",
  *      description="Api de transação",
  *      @OA\Contact(
- *          email="darius@matulionis.lt"
+ *          email="monique.santos22.ms@gmail.com"
  *      )     
  * )
  */
