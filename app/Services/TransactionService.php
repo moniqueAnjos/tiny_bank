@@ -6,10 +6,12 @@ use App\Interfaces\{
     TransactionRepositoryInterface,
     UserRepositoryInterface,
 };
+use App\Mail\SendMailUser;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class TransactionService
 {
@@ -25,7 +27,7 @@ class TransactionService
     }
 
     public function createTransaction($transactionData)
-    {
+    {    
         $userPayer = $this->validateExistenceUser($transactionData["payer"]);
         $userPayee = $this->validateExistenceUser($transactionData["payee"]);
         $this->validateTypeUser($userPayer["type"]);

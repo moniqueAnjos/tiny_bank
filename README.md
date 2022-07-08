@@ -63,7 +63,20 @@ Execute o seeder no banco e pronto
 ***Observação*** : é recomendável ter um banco de dados limpo antes de rodar. Você pode atualizar suas migrações a qualquer momento para limpar o banco de dados executando o seguinte comando
 
     php artisan migrate:refresh
-    
+
+## Testes de Integração
+
+Os testes de integração foram implementados para inserir dados fakes no momento da execução, portanto, mesmo com o banco vazio eles podem ser executados.
+
+    #Para rodar todos os testes
+    php artisan test
+
+    #Para rodar teste separadamente
+    php artisan test --filter UserTest
+    php artisan test --filter TransactionTest
+
+***Observação*** : é necessario ter rodado as migrations antes de rodar qualquer teste. Os testes usam uma trait que zera o banco sempre que executado(refreshdatabase).
+
 ----------
 
 # Visão geral do código
@@ -76,11 +89,13 @@ Execute o seeder no banco e pronto
 - `app/Http/Requests` - Contém todas as solicitações de formulário de API
 - `app/Interfaces` - Contém todas as interfaces criadas
 - `app/Repositories` - Contém todas os repositórios criados
-- `app/Services` - Contém s lógica necessária para executar as regras de negocio
+- `app/Services` - Contém a lógica necessária para executar as regras de negocio
+- `app/Mail` - Contém as configurações do envio de email de notificação do usuário
 - `config` - Contém todos os arquivos de configuração do aplicativo
 - `database/factories` - Contém a fábrica de modelos para todos os modelos
 - `database/migrations` - Contém todas as migrações de banco de dados
 - `database/seeds` - Contém a carga ficticia do banco de dados
+- `resources/views/emails` - Contém o modelo do corpo do email
 - `routes` - Contém todas as rotas da api definidas no arquivo api.php
 - `storage/api-docs` - Contém o json gerado pelo swagger para a documentação viva
 - `tests/Feature` - Contém o teste de integração da aplicação
@@ -95,7 +110,7 @@ Execute o seeder no banco e pronto
 # Documentação (swagger)
 
     #Para acessar a documentação da api utilize a url
-    # Com o servidor rodando
+    #Com o servidor rodando
     http://127.0.0.1:8000/api/doc
 
 ----------
