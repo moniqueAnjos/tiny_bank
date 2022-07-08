@@ -6,12 +6,10 @@ use App\Interfaces\{
     TransactionRepositoryInterface,
     UserRepositoryInterface,
 };
-use App\Mail\SendMailUser;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Mail;
 
 class TransactionService
 {
@@ -27,7 +25,7 @@ class TransactionService
     }
 
     public function createTransaction($transactionData)
-    {    
+    {
         $userPayer = $this->validateExistenceUser($transactionData["payer"]);
         $userPayee = $this->validateExistenceUser($transactionData["payee"]);
         $this->validateTypeUser($userPayer["type"]);
@@ -37,14 +35,12 @@ class TransactionService
         $newValuePayer = $userPayer["value"] - $transactionData["value"];
         $newValuePayee = $userPayee["value"] + $transactionData["value"];
 
-        $transaction = $this->makeTransaction(
+        $this->makeTransaction(
             $transactionData,
             $newValuePayer,
             $newValuePayee
         );
-        if ($transaction) {
-            $this->transactionRepository->sendNotificaction();
-        }
+        $this->transactionRepository->sendNotificaction();
     }
 
     private function makeTransaction($transactionData, $valuePayer, $valuePayee)
@@ -93,6 +89,7 @@ class TransactionService
             throw new AuthorizationException();
         }
     }
+
     private function validateEnoughValue($valueUser, $valueTransaction)
     {
         if ($valueUser < $valueTransaction) {
